@@ -6,23 +6,30 @@
     <link rel="stylesheet" href="css/styles.css">
   </head>
   <body>
-
+    <h3>WaveForm:</h3>
     <select id="waveform-select">
       <option value="SINE">Sine</option>
       <option value="TRIANGLE">Triangle</option>
       <option value="SAWTOOTH">Sawtooth</option>
-      <option value="SQUARE">Square</option>
+      <option selected value="SQUARE">Square</option>
     </select>
 
+    <div id="envelope">
+      <h3>Envelope:</h3>
+      Release:
+      <input id="release" type="range" value="20">
+    </div>
+
     <div id="keyboard">
-      <button class="key" data-freq="100">SOUND</button>
-      <button class="key" data-freq="150">SOUND</button>
       <button class="key" data-freq="200">SOUND</button>
       <button class="key" data-freq="250">SOUND</button>
       <button class="key" data-freq="300">SOUND</button>
+      <button class="key" data-freq="350">SOUND</button>
+      <button class="key" data-freq="400">SOUND</button>
     </div>
 
     <script src="js/app.js" charset="utf-8"></script>
-    
+
+
   </body>
 </html>
