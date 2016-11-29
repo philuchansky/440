@@ -1,5 +1,6 @@
 var keyboard = document.querySelector('#keyboard')
 var keys = document.querySelectorAll('#keyboard button.key')
+var waveformSelect = document.querySelector('#waveform-select')
 var oscillator = null
 
 // create web audio api context
@@ -10,7 +11,7 @@ vca.connect(audioCtx.destination)
 
 function attack(freq) {
   oscillator = audioCtx.createOscillator()
-  oscillator.type = oscillator.SAWTOOTH
+  oscillator.type = oscillator[waveformSelect.value]
   oscillator.frequency.value = freq
   oscillator.connect(vca)
   oscillator.start()
