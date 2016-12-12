@@ -1,9 +1,8 @@
 var keyboard = document.querySelector('#keyboard')
 var keys = document.querySelectorAll('#keyboard button.key')
 var waveformSelect = document.querySelector('#waveform-select')
+var attack = document.querySelector('#attack')
 var release = document.querySelector('#release')
-
-
 
 function release(time) {
   oscillator.stop(time);
@@ -26,44 +25,59 @@ keys.forEach(function(key) {
 
 function Note(freq) {
   // adsr:
+  this.attack = attack.value / 20
   this.release = release.value / 20
-  // this.release = 1
 
 
 
   var audioCtx = new (window.AudioContext || window.webkitAudioContext)()
 
   var vca = audioCtx.createGain()
-  vca.gain.value = 1
+  vca.gain.value = 0
   vca.connect(audioCtx.destination)
 
-  var waveform = waveformSelect.value
-
   var oscillator = audioCtx.createOscillator()
-  oscillator.type = waveform
+  oscillator.type = waveformSelect.value
   oscillator.frequency.value = freq
   oscillator.connect(vca)
   oscillator.start()
 
+  var attackTime = (this.attack)
+  console.log(attackTime)
   var releaseTime = (this.release)
-  console.log("Release time:", releaseTime)
   var initialGain = vca.gain.value
-  console.log("Initial Gain:", initialGain)
-
+  var boostRate = (0.01 / (attackTime))
   var attenuationRate = (0.01 / (releaseTime))
 
+  function fadeIn() {
+    var fadeInInterval = setInterval(function() {
+      vca.gain.value += boostRate
+    }, 10)
 
-  var fadeOut = setInterval(function() {
-    vca.gain.value -= attenuationRate
-  }, 10)
+    setTimeout(function() {
+      clearInterval(fadeInInterval)
+      fadeOut()
+    }, attackTime * 1000)
+  }
 
-  oscillator.stop(releaseTime)
+  fadeIn()
 
-  setTimeout(function() {
-    console.log("Ending Gain:", vca.gain.value)
-    clearInterval(fadeOut)
-    audioCtx.close()
-  }, releaseTime * 1000)
+  function fadeOut() {
+    var fadeOutInterval = setInterval(function() {
+      vca.gain.value -= attenuationRate
+    }, 10)
+
+    oscillator.stop(releaseTime)
+
+    setTimeout(function() {
+      console.log("Ending Gain:", vca.gain.value)
+      clearInterval(fadeOutInterval)
+      audioCtx.close()
+    }, releaseTime * 1000)
+  }
+
+  // fadeOut()
+
   //
   console.log("Playing at", freq + "hz")
 }
