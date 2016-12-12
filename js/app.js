@@ -8,14 +8,6 @@ var release = document.querySelector('#release')
 function release(time) {
   oscillator.stop(time);
 
-  // var fadeOut = setInterval(function(){
-  //   // vca.gain.value -= 0.5
-  // }, 10)
-  //
-  // setTimeout(function() {
-  //   clearInterval(fadeOut)
-  // }, releaseTime)
-
   //
   console.log("Stop playing!")
 }
@@ -45,8 +37,10 @@ function Note(freq) {
   vca.gain.value = 1
   vca.connect(audioCtx.destination)
 
+  var waveform = waveformSelect.value
+
   var oscillator = audioCtx.createOscillator()
-  oscillator.type = oscillator[waveformSelect.value]
+  oscillator.type = waveform
   oscillator.frequency.value = freq
   oscillator.connect(vca)
   oscillator.start()
